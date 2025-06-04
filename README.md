@@ -129,10 +129,9 @@ A comprehensive RESTful API task management system built with Laravel and Vanill
 
 ## 📚 API Documentation
 ### Authentication Login
-```
 POST /api/login
 Content-Type: application/json
-
+```
 {
   "email": "admin@example.com",
   "password": "password"
@@ -154,15 +153,14 @@ Response:
 }
 ```
 ### Users Get All Users (Admin & Manager only)
-```
 GET /api/users
 Authorization: Bearer {token}
-``` Create User (Admin only)
-```
+
+### Create User (Admin only)
 POST /api/users
 Authorization: Bearer {token}
 Content-Type: application/json
-
+``` 
 {
   "name": "New User",
   "email": "user@example.com",
@@ -172,41 +170,47 @@ Content-Type: application/json
 }
 ```
 ### Tasks Get All Tasks (Role-based filtering)
-```
+
 GET /api/tasks
 Authorization: Bearer {token}
-``` Create Task
-```
+
+### Create Task
+
 POST /api/tasks
 Authorization: Bearer {token}
 Content-Type: application/json
-
+```
 {
   "title": "Task Title",
   "description": "Task Description",
   "assigned_to": "user-uuid",
   "due_date": "2024-12-31"
 }
-``` Update Task
-```
+``` 
+
+### Update Task
+
 PUT /api/tasks/{id}
 Authorization: Bearer {token}
 Content-Type: application/json
 
+```
 {
   "title": "Updated Title",
   "status": "in_progress"
 }
-``` Delete Task (Admin/Creator only)
-```
+``` 
+
+### Delete Task (Admin/Creator only)
+
 DELETE /api/tasks/{id}
 Authorization: Bearer {token}
-```
+
 ### Activity Logs Get All Logs (Admin only)
-```
+
 GET /api/logs
 Authorization: Bearer {token}
-```
+
 ## 🧪 Testing
 ### Run All Tests
 ```
