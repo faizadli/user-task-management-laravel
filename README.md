@@ -225,27 +225,27 @@ php artisan test --coverage
 
 ### 🔐 Login Page
 ![Login Page](login.png)
-Halaman autentikasi pengguna dengan validasi role-based access.
+User authentication page with role-based access validation.
 
 ### 📊 Dashboard
 ![Dashboard](dashboard.png)
-Dashboard utama yang menampilkan task berdasarkan role pengguna.
+The main dashboard displays tasks based on user role.
 
 ### ➕ Create Task
 ![Create Task](create-task.png)
-Form pembuatan task dengan validasi input.
+Task creation form with input validation.
 
 ### ✏️ Edit Task
 ![Edit Task](edit-task.png)
-Interface untuk mengedit task yang sudah ada.
+Interface for editing existing tasks.
 
 ### 🗑️ Delete Task
 ![Delete Task](delete-task.png)
-Konfirmasi penghapusan task.
+Confirm task deletion.
 
 ### ✅ Test Results
 ![Test Results](test-result.png)
-Hasil pengujian yang menunjukkan coverage lengkap.
+Test results showing complete coverage.
 
 ## 🏗️ Business Logic & Rules
 ### Role-based Constraints
@@ -264,10 +264,10 @@ Hasil pengujian yang menunjukkan coverage lengkap.
 
 ## 👥 Default User Credentials
 Role Email Password Status 
-Admin admin@example.com password (Active)
-Manager manager@example.com password (Active)
-Staff staff@example.com password (Active) 
-User inactive@example.com password (Inactive)
+- Admin admin@example.com password (Active)
+- Manager manager@example.com password (Active)
+- Staff staff@example.com password (Active) 
+- User inactive@example.com password (Inactive)
 
 ## 🛠️ Technologies Used
 - Backend : Laravel 11, PHP 8.1+
