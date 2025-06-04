@@ -12,7 +12,7 @@ class TaskPolicy
 
     public function viewAny(User $user)
     {
-        return true; // Semua role bisa melihat tasks (dengan filter di controller)
+        return true;
     }
 
     public function view(User $user, Task $task)
@@ -61,5 +61,11 @@ class TaskPolicy
     public function delete(User $user, Task $task)
     {
         return $user->role === 'admin' || $task->created_by === $user->id;
+    }
+
+    public function export(User $user)
+    {
+        // Hanya admin yang bisa export semua tasks
+        return $user->role === 'admin';
     }
 }

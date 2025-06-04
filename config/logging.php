@@ -129,7 +129,7 @@ return [
 
         'api_activity' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/api-activity.log'),
+            'path' => storage_path('logs/api_activity.log'), 
             'level' => 'info',
             'days' => 14,
         ],

@@ -11,28 +11,20 @@ class LogRequest
     public function handle(Request $request, Closure $next)
     {   
         try {
-            // Tangkap respons dari middleware berikutnya
             $response = $next($request);
             
-            // Log permintaan yang berhasil
-            Log::info('API Request', [
+            // Gunakan channel api_activity khusus
+            Log::channel('api_activity')->info('API Request', [
                 'method' => $request->method(),
                 'url' => $request->fullUrl(),
                 'user' => $request->user() ? $request->user()->id : 'guest',
                 'ip' => $request->ip(),
-                'status' => $response ? $response->status() : 'unknown'
+                'status' => $response ? $response->getStatusCode() : 'unknown'
             ]);
             
             return $response;
         } catch (\Throwable $e) {
-            // Log error tanpa mempengaruhi respons
-            Log::error('Error logging request: ' . $e->getMessage(), [
-                'exception' => get_class($e),
-                'file' => $e->getFile(),
-                'line' => $e->getLine()
-            ]);
-            
-            // Lempar kembali exception untuk ditangani oleh handler exception Laravel
+            Log::channel('api_activity')->error('Error logging request: ' . $e->getMessage());
             throw $e;
         }
     }

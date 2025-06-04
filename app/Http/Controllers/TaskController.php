@@ -183,4 +183,38 @@ class TaskController extends Controller
             ], 500);
         }
     }
+
+    public function exportCsv(Request $request)
+    {
+        $this->authorize('export', Task::class); // Ganti dari 'viewAny' ke 'export'
+        
+        $tasks = $this->taskService->getTasksForUser($request->user());
+        
+        $filename = 'tasks_' . date('Y-m-d_H-i-s') . '.csv';
+        
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+        
+        $callback = function() use ($tasks) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, ['ID', 'Title', 'Description', 'Status', 'Due Date', 'Assigned To', 'Created By']);
+            
+            foreach ($tasks as $task) {
+                fputcsv($file, [
+                    $task->id,
+                    $task->title,
+                    $task->description,
+                    $task->status,
+                    $task->due_date,
+                    $task->assignedUser->name ?? '',
+                    $task->creator->name ?? ''
+                ]);
+            }
+            fclose($file);
+        };
+        
+        return response()->stream($callback, 200, $headers);
+    }
 }
