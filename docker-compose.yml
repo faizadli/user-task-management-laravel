@@ -24,7 +24,7 @@ services:
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     ports:
-      - "3306:3306"
+      - "3307:3306"  # Ubah dari 3306:3306 ke 3307:3306
     volumes:
       - dbdata:/var/lib/mysql
     networks:
