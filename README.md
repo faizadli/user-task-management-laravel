@@ -57,7 +57,6 @@ A comprehensive RESTful API task management system built with Laravel and Vanill
 ### Prerequisites
 - PHP 8.1+
 - Composer
-- Node.js & NPM
 - MySQL/SQLite
 - Docker (optional)
 
@@ -103,29 +102,99 @@ A comprehensive RESTful API task management system built with Laravel and Vanill
    - Frontend: http://localhost:8000/frontend/login.html
    
 ### Docker Setup
-1. Build and start containers
-   
+
+#### Prerequisites
+
+1. **Ensure Docker and Docker Compose are installed on your system**
+   - [Install Docker Desktop](https://www.docker.com/products/docker-desktop/) for Windows/Mac
+   - Or [Docker Engine](https://docs.docker.com/engine/install/) for Linux
+
+2. **Docker Structure**
+   This project uses several Docker containers:
+   - **app**: PHP 8.2-FPM container for Laravel application
+   - **db**: MySQL 8.0 container for database
+   - **nginx**: Nginx container as web server
+   - **phpmyadmin**: phpMyAdmin container for database management
+
+3. **Ensure the following ports are available on your system:**
+   - 8000: For web application access
+   - 8080: For phpMyAdmin access
+   - 3307: For direct MySQL access (changed from 3306 to avoid conflicts)
+
+#### Installation Steps
+
+1. **Clone repository and enter project directory**
+   ```bash
+   git clone <repository-url>
+   cd user-task-management-laravel
    ```
-   docker-compose up -d --build
+2. **Ensure Nginx folder structure is available**
+   ```bash
+   mkdir -p docker/nginx/conf.d
    ```
-2. Install dependencies
-   
+3. **Create Nginx configuration file Create file docker/nginx/conf.d/app.conf with content**
+   ```bash
+   server {
+      listen 80;
+      index index.php index.html;
+      error_log  /var/log/nginx/error.log;
+      access_log /var/log/nginx/access.log;
+      root /var/www/public;
+      
+      location ~ \.php$ {
+         try_files $uri =404;
+         fastcgi_split_path_info ^(.+\.php)(/.+)$;
+         fastcgi_pass app:9000;
+         fastcgi_index index.php;
+         include fastcgi_params;
+         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+         fastcgi_param PATH_INFO $fastcgi_path_info;
+      }
+      
+      location / {
+         try_files $uri $uri/ /index.php?$query_string;
+         gzip_static on;
+      }
+   }
    ```
-   docker-compose exec app composer install
+4. **Copy .env file for Docker**
+   ```bash
+   cp .env.example .env
    ```
-3. Setup environment and database
-   
+5. **Edit .env file for Docker database configuration**
+   ```bash
+   DB_CONNECTION=mysql
+   DB_HOST=db
+   DB_PORT=3306
+   DB_DATABASE=task_management
+   DB_USERNAME=root
+   DB_PASSWORD=root
    ```
-   docker-compose exec app cp .env.example .env
-   docker-compose exec app php artisan key:generate
-   docker-compose exec app php artisan 
-   migrate:fresh --seed
+6. **Build and start Docker containers**
+   ```bash
+   docker-compose up -d --build
    ```
-4. Access the application
-   
-   - API: http://localhost:8080/api
-   - Frontend: http://localhost:8080/frontend/login.html
-   - phpMyAdmin: http://localhost:8081
+7. **Install PHP dependencies with Composer inside container**
+   ```bash
+   docker-compose exec app composer install
+   ```
+8. **Generate Laravel application key**
+   ```bash
+   docker-compose exec app php artisan key:generate
+   ```
+9. **Migrate and seed the database**
+   ```bash
+   docker-compose exec app php artisan migrate:fresh --seed
+   ```
+10. **Set storage permissions (if needed)**
+   ```bash
+   docker-compose exec app chmod -R 777 storage bootstrap/cache
+   ```
+11. **Access the application**
+   - Web Application: **http://localhost:8000**
+   - Frontend: **http://localhost:8000/frontend/login.html**
+   - API: **http://localhost:8000/api**
+   - phpMyAdmin: **http://localhost:8080 (server: db, username: root, password: root)**
 
 ## 📚 API Documentation
 ### Authentication Login
